@@ -2,11 +2,11 @@
 \alias{sync.test}
 \title{sync test}
 \description{
-Non-parametric test for synchronism of parametric trends in multiple time series. The method tests whether \eqn{N} observed time series exhibit the same trend of some pre-specified smooth parametric form. Current version of the code assumes a linear trend \eqn{f(\theta,t) = \theta_0 + \theta_1t}, where \eqn{\theta}'s are trend parameters, \eqn{t} is a regular sequence on the interval (0,1]. Note that an assumption of `no trend' among all N observed time series is a subcase of a linear trend.
+Non-parametric test for synchronism of parametric trends in multiple time series. The method tests whether \eqn{N} observed time series exhibit the same trend of some pre-specified smooth parametric form. Current version of the code assumes a linear trend \eqn{f(\theta,t) = \theta_0 + \theta_1t}, where \eqn{\theta}'s are trend parameters, \eqn{t} is a regular sequence on the interval (0,1]. Note that an assumption of `no trend' among all \eqn{N} observed time series is a subcase of a linear trend.
 }
 
 \usage{
-sync.test(X, B=1000, Window=NULL, q=NULL, j=NULL, ar_order=NULL, BIC=TRUE)
+sync.test(X, B=1000, Window=NULL, q=NULL, j=NULL, ar_order=NULL, BIC=TRUE, robust = TRUE)
 }
 
 \arguments{
@@ -24,10 +24,11 @@ sync.test(X, B=1000, Window=NULL, q=NULL, j=NULL, ar_order=NULL, BIC=TRUE)
 
   \item{BIC}{logical value indicates whether the order of autoregressive filter should be selected by Bayesian information criterion (BIC). If \code{TRUE} (default), models of orders 1,...,\code{ar_order} or 1,...,\code{floor(10*log10(T))} are considered, depending on whether \code{ar_order} is defined or not.}
   
+  \item{robust}{logical value indicates whether to use robust estimates of autoregression coefficients using \code{\link{HVK}} function (default), or to use Yule-Walker estimates delivered by \command{ar} function.}
 }
 
 \details{
-Currently this function allows to test only for a common parametric linear trend, including the case of non-significant or zero-slope trend (check the function output for significance of the time coefficient \eqn{t}). 
+Currently this function allows to test only for a common parametric linear trend, including the case of non-significant or zero-slope trend (check the function output for significance of the coefficient for \eqn{t}). 
 
 Arguments \code{Window}, \code{j} and \code{q} are used to set windows for the local regression. Current version of the function assumes two options: (1) user specifies one fixed window for each time series using the argument \code{Window} (if \code{Window} is set, \code{j} and \code{q} are ignored), and (2) user specifies a set of windows by \code{j} and \code{q} to apply this set to each time series and to select an optimal window using a heuristic \eqn{m}-out-of-\eqn{n} subsampling algorithm (Bickel and Sakov, 2008). The option of selecting windows automatically for some of the time series, while for other time series the window is fixed, is not available yet. If none of these three arguments is set, default \code{j} and \code{q} are used. Values \code{T*q^j} are mapped to the largest previous integer, then only those greater than 2 are used.
 }

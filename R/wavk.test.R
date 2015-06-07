@@ -8,6 +8,7 @@ ar.order=NULL, BIC=TRUE, robust=TRUE, out=FALSE)
     if (NCOL(x) > 1 | !is.numeric(x)) {
         stop("x is not a vector or univariate time series.")
     }
+    n <- length(x)
     if (any(is.na(x))) {
         stop("x contains missing values.")
     }
@@ -56,7 +57,6 @@ ar.order=NULL, BIC=TRUE, robust=TRUE, out=FALSE)
 
     ### Function.
     DNAME <- deparse(substitute(x))
-    n <- length(x)
     t <- c(1:n)/n
     result <- matrix(NA, length(kn), 2)
     res <- matrix(NA, 1, 2)
