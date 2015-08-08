@@ -36,11 +36,11 @@ where \eqn{\{V_{t1}, \ldots, V_{tk_n}\}=\{Z_j: j\in W_{t}\}}, \eqn{W_t} is a loc
 }
 
 \references{
-Rice, J. (1984) Bandwidth choice for nonparametric regression. \emph{The Annals of Statistics} 12, 1215-1230.
+Rice, J. (1984) Bandwidth choice for nonparametric regression. \emph{The Annals of Statistics} 12, 1215--1230.
 
-Wang, L., Akritas, M. G. and Van Keilegom, I. (2008) An ANOVA-type nonparametric diagnostic test for heteroscedastic regression models. \emph{Journal of Nonparametric Statistics} 20(5), 365-382.
+Wang, L., Akritas, M. G. and Van Keilegom, I. (2008) An ANOVA-type nonparametric diagnostic test for heteroscedastic regression models. \emph{Journal of Nonparametric Statistics} 20(5), 365--382.
                                                   
-Wang, L. and Van Keilegom, I. (2007) Nonparametric test for the form of parametric regression with time series errors. \emph{Statistica Sinica} 17, 369-386.
+Wang, L. and Van Keilegom, I. (2007) Nonparametric test for the form of parametric regression with time series errors. \emph{Statistica Sinica} 17, 369--386.
 }
 
 \author{Yulia R. Gel, Vyacheslav Lyubchich}

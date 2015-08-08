@@ -1,6 +1,6 @@
 \name{sync.test}
 \alias{sync.test}
-\title{sync test}
+\title{Time series trend synchronism test}
 \description{
 Non-parametric test for synchronism of parametric trends in multiple time series. The method tests whether \eqn{N} observed time series exhibit the same trend of some pre-specified smooth parametric form. Current version of the code assumes a linear trend \eqn{f(\theta,t) = \theta_0 + \theta_1t}, where \eqn{\theta}'s are trend parameters, \eqn{t} is a regular sequence on the interval (0,1]. Note that an assumption of `no trend' among all \eqn{N} observed time series is a subcase of a linear trend.
 }
@@ -50,13 +50,13 @@ A list of class htest containing the following components:
 }
 
 \references{
-Bickel, P. J. and Sakov, A. (2008) On the choice of \eqn{m} in the \eqn{m} out of \eqn{n} bootstrap and confidence bounds for extrema. \emph{Statistica Sinica} 18, 967-985.
+Bickel, P. J. and Sakov, A. (2008) On the choice of \eqn{m} in the \eqn{m} out of \eqn{n} bootstrap and confidence bounds for extrema. \emph{Statistica Sinica} 18, 967--985.
 
-Lyubchich, V., Gel, Y. R. and El-Shaarawi, A. (2013) On detecting non-monotonic trends in environmental time series: a fusion of local regression and bootstrap. \emph{Environmetrics} 24, 209-226.
+Lyubchich, V., Gel, Y. R. and El-Shaarawi, A. (2013) On detecting non-monotonic trends in environmental time series: a fusion of local regression and bootstrap. \emph{Environmetrics} 24, 209--226.
 
-Wang, L., Akritas, M. G. and Van Keilegom, I. (2008) An ANOVA-type nonparametric diagnostic test for heteroscedastic regression models. \emph{Journal of Nonparametric Statistics} 20(5), 365-382.
+Wang, L., Akritas, M. G. and Van Keilegom, I. (2008) An ANOVA-type nonparametric diagnostic test for heteroscedastic regression models. \emph{Journal of Nonparametric Statistics} 20(5), 365--382.
 
-Wang, L. and Van Keilegom, I. (2007) Nonparametric test for the form of parametric regression with time series errors. \emph{Statistica Sinica} 17, 	369-386.
+Wang, L. and Van Keilegom, I. (2007) Nonparametric test for the form of parametric regression with time series errors. \emph{Statistica Sinica} 17, 369--386.
 }
 
 \author{Yulia R. Gel, Vyacheslav Lyubchich, Xingyu Wang}

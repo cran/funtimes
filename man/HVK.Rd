@@ -28,7 +28,7 @@ Vector of length \code{ar.order} with estimated autoregression coefficients.
 }
 
 \references{
-Hall, P. and Van Keilegom, I. (2003) Using difference-based methods for inference in nonparametric regression with time series errors. \emph{J. R. Statist. Soc. B} 65, Part 2, 443-456.
+Hall, P. and Van Keilegom, I. (2003) Using difference-based methods for inference in nonparametric regression with time series errors. \emph{J. R. Statist. Soc. B} 65, Part 2, 443--456.
 }
 
 \author{Yulia R. Gel, Vyacheslav Lyubchich, Xingyu Wang}
