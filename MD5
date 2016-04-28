@@ -1,4 +1,4 @@
-33d5b4a44eaf49977ce985c4c7a45336 *DESCRIPTION
+eb748266ea99491b65418401a9aff139 *DESCRIPTION
 c67c2b058a05553bf304464255afc091 *NAMESPACE
 70ca24b0561e0b50c96e59684e93def3 *R/CExpandSlideCluster.R
 d0d68f30488c4a993b5552d9b47e1d91 *R/CExpandWindowCluster.R
@@ -8,8 +8,6 @@ ba7842f3060709dabe60599aec947163 *R/CSlideCluster.R
 3a23f270c05fe6cbc4c07657f95cc4e6 *R/CWindowCluster.R
 623d1609cb5101ccc1737a38a58acd5b *R/HVK.R
 1fae0cf435baeef335d2327f6bc7f7bb *R/WAVK.R
-b0a808f27dea55ee8411f7cd9a691c07 *R/i.tails.R
-e17c30b52da063bf0ef4032cd4a601db *R/q.tails.R
 920c242642b0d258df0aa9792e5d819e *R/sync.test.R
 f7ba1e0d447ed0bb9b6ca5903fcee72a *R/wavk.test.R
 2b7474c23396956b8cf55e7090f8b3eb *man/CExpandSlideCluster.Rd
@@ -20,7 +18,5 @@ e22ece60b4ccc04ce27d6a607bed7e59 *man/CSlideCluster.Rd
 9157a1dc8ef29cadd132d6b6c3ada1ea *man/CWindowCluster.Rd
 b2abd525091d08f0484b1d1766b005ae *man/HVK.Rd
 432345cf1bf0be1fb7a49997d158d1d0 *man/WAVK.Rd
-72a25782d27206eea309f18e1946f4b9 *man/i.tails.Rd
-5f54903e6f56cf48340f976574cef210 *man/q.tails.Rd
 e591064b369efa7d29bba92b0694cba4 *man/sync.test.Rd
 3634759a028a5954186a0f4e94bc5a52 *man/wavk.test.Rd
