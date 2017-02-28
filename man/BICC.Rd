@@ -85,7 +85,7 @@ purity(classes, tmp$Clusters[1,])
 
 ##### Example 2
 # 2.1 Modify time series and update classes accordingly:
-# Add a mean shift of to a half of the time series:
+# Add a mean shift to a half of the time series:
 X2 <- X
 X2[, 1:(N/2)] <- X2[, 1:(N/2)] + 3
 classes2 <- rep(c(1, 2), each = N/2)
