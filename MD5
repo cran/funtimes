@@ -1,4 +1,4 @@
-b29a669ef16fa64813c5c6c3299b57a6 *DESCRIPTION
+e4fd8bff4dd5663dbdb256ec31323c9c *DESCRIPTION
 49e911114cb631701ad54d462071f792 *NAMESPACE
 641eadcdc8d7efba7e8cd3372128197a *R/ARest.R
 972de681f27df79eb1e8fb4703da5cb8 *R/BICC.R
@@ -12,14 +12,14 @@ d678563bc19c86fdcaa2a684d7180c49 *R/CWindowCluster.R
 dbaed7f336661250346feabb76a1cf65 *R/fun_trust.R
 b5022d80865eae90e5d147c70dd3acd0 *R/funtimes.R
 c034f43c78154a9d1b0ba9a5e8ec4343 *R/i.tails.R
-143aa5531fc34fa4db77d419120e13d3 *R/mcusum.test.R
+d70ce3ab6497bcff142e8c4349391c8f *R/mcusum.test.R
 57c891b1626f976793f9494bede46b03 *R/notrend.test.R
 7a2d955f9e07114241a2752f9aad62f9 *R/purity.R
 fefd339074d80cf80d77daaacfa3bec1 *R/q.tails.R
-17ec54e28db24503b5d802861bbc416c *R/sync.cluster.R
+706ca879792a08773167852f8e190dbb *R/sync.cluster.R
 f483e48f133aded01d78e608a21c2305 *R/sync.test.R
 9eb387d7a06647c3f946593cc23198d5 *R/wavk.test.R
-dc7d97df31e5ab4593617f0698cec777 *build/partial.rdb
+ede6e92b1330c9f8856764bea82c0e15 *build/partial.rdb
 56ae2a08660a61382ebf2b611f584e44 *inst/REFERENCES.bib
 cf55a3d5473ec8eca49b943aa6bd4507 *man/ARest.Rd
 45afb12e8f3a56b5c041418ebd2cfb5d *man/BICC.Rd
@@ -30,10 +30,10 @@ fa67477466f20f7b0ec5441d1ad93250 *man/HVK.Rd
 d3014768cabd79f9777a137337d16245 *man/WAVK.Rd
 54dd80fa6da2778b2ddb95bd25f98c4f *man/beales.Rd
 d8913afa57d5b87dd535ee5c2a51c131 *man/i.tails.Rd
-19f2beed6483fb2a42fb87e13736b246 *man/mcusum.test.Rd
+9fddf0086289744346047d4297b65d32 *man/mcusum.test.Rd
 2afa36283cf4d4201349b881b6290449 *man/notrend.test.Rd
 e2f049f23a3eea832181e60893494fc1 *man/purity.Rd
 c61661600c94ed2a01f1f762e87d180a *man/q.tails.Rd
-12e950a7924bf2f6bce2503ccaebca6a *man/sync.cluster.Rd
+f885c1e9605f499084f0a07f3f9d4587 *man/sync.cluster.Rd
 b7d2eccc861d0003a14f97db2d855c02 *man/sync.test.Rd
 e5be485a3cf6110ecceeadde4e73dd2a *man/wavk.test.Rd
