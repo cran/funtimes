@@ -31,23 +31,28 @@ Nonparametric comparison of tails of distributions is implemented using small bi
 quantiles \insertCite{Soliman_etal_2015_insurance}{funtimes}
 or intervals in the units in which the data are recorded \insertCite{Lyubchich_Gel_2017_insurance}{funtimes}.
 
-For a list of deprecated functions, use \code{?'funtimes-deprecated'}
+For a list of currently deprecated functions, use \code{?'funtimes-deprecated'}
+
+For a list of defunct (removed) functions, use \code{?'funtimes-defunct'}
 }
 \references{
 \insertAllCited{}
 }
 \author{
-\strong{Maintainer}: Vyacheslav Lyubchich \email{lyubchic@umces.edu} (\href{https://orcid.org/0000-0001-7936-4285}{ORCID})
+\strong{Maintainer}: Vyacheslav Lyubchich \email{lyubchich@umces.edu} (\href{https://orcid.org/0000-0001-7936-4285}{ORCID})
 
 Authors:
 \itemize{
   \item Yulia R. Gel
+  \item Palina Niamkova
 }
 
 Other contributors:
 \itemize{
   \item Calvin Chu [contributor]
   \item Xin Huang [contributor]
+  \item Umar Islambekov [contributor]
+  \item Dorcas Ofori-Boateng [contributor]
   \item Ethan D. Schaeffer [contributor]
   \item Srishti Vishwakarma [contributor]
   \item Xingyu Wang [contributor]

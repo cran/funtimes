@@ -43,8 +43,8 @@ apply(X, 2, function(x) notrend_test(x, test = "WAVK",
                                      factor.length = "adaptive.selection")$p.value)
 
 ## -----------------------------------------------------------------------------
-notrend_test(X0, test = "WAVK", factor.length = "adaptive.selection")
-wavk_test(X0 ~ 0, factor.length = "adaptive.selection")
+notrend_test(X0, test = "WAVK", factor.length = "adaptive.selection") # WAVK with sieve bootstrap
+wavk_test(X0 ~ 0, factor.length = "adaptive.selection") # WAVK with hybrid bootstrap
 
 ## -----------------------------------------------------------------------------
 wavk_test(X0 ~ t, factor.length = "adaptive.selection")
@@ -53,5 +53,5 @@ wavk_test(X0 ~ t, factor.length = "adaptive.selection")
 sapply(names(X[,-1]), function(x) wavk_test(eval(parse(text = x)) ~ t)$p.value)
 
 ## -----------------------------------------------------------------------------
-wavk_test(X3 ~ poly(t, 2), factor.length = "adaptive.selection")
+wavk_test(X3 ~ poly(t, 2), factor.length = "adaptive.selection", out = TRUE)
 
