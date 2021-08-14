@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2021-07-19" />
+<meta name="date" content="2021-08-13" />
 
 <title>Tests for trends in time series</title>
 
@@ -161,7 +161,7 @@ div.csl-indent {
 
 
 <h1 class="title toc-ignore">Tests for trends in time series</h1>
-<h4 class="date">2021-07-19</h4>
+<h4 class="date">2021-08-13</h4>
 
 
 <div id="TOC">
@@ -238,7 +238,7 @@ that can be tested specifically using t-test.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X[,<span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">notrend_test</span>(x)<span class="sc">$</span>p.value)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    X1    X2    X3 </span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.000 0.002 0.858</span></span></code></pre></div>
-<p>indicating that the null hypothesis of no trend could be rejected and hypothesis of a linear trend could be accepted for <code>X1</code> and <code>X2</code>. While <code>X3</code> has a trend (based on the way it was simulated and the time series plot above), the alternative hypothesis of a linear trend does not fit in this case.</p>
+<p>indicating that the null hypothesis of no trend could be rejected and hypothesis of a linear trend could be accepted for <code>X1</code> and <code>X2</code>. While <code>X3</code> has a trend (based on the way it was simulated and the time series plot above), the alternative hypothesis of a linear trend does not fit in this case, so the test for linear trend (t-test) failed to reject the null hypothesis.</p>
 </div>
 <div id="monotonic-trend" class="section level2" number="2.2">
 <h2 number="2.2"><span class="header-section-number">2.2</span> Monotonic trend</h2>
@@ -312,9 +312,9 @@ where <span class="math inline">\(f\)</span> belongs to a known family of smooth
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative hypothesis: trend is not of the form X0 ~ t.</span></span></code></pre></div>
 <p>Note that the time sequence <code>t</code> is specified automatically within the function.</p>
 <p>For the other time series, <span class="math inline">\(p\)</span>-values are shown below:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">names</span>(X[,<span class="sc">-</span><span class="dv">1</span>]), <span class="cf">function</span>(x) <span class="fu">wavk_test</span>(<span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> x)) <span class="sc">~</span> t)<span class="sc">$</span>p.value)</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X[,<span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">wavk_test</span>(x <span class="sc">~</span> t, <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>)<span class="sc">$</span>p.value)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    X1    X2    X3 </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.810 0.628 0.008</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.954 0.786 0.020</span></span></code></pre></div>
 <p>The function <code>poly</code> could also be used, for example, test quadratic trend <span class="math inline">\(f(\theta,t) = \theta_0 + \theta_1 t + \theta_2 t^2\)</span> and show the trend estimates using the argument <code>out = TRUE</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wavk_test</span>(X3 <span class="sc">~</span> <span class="fu">poly</span>(t, <span class="dv">2</span>), <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>, <span class="at">out =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>

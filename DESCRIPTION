@@ -1,17 +1,18 @@
 Package: funtimes
 Type: Package
 Title: Functions for Time Series Analysis
-Version: 8.0
-Date: 2021-07-19
+Version: 8.1
+Date: 2021-08-15
 Authors@R: c(person("Vyacheslav", "Lyubchich", 
                     role = c("aut", "cre"),
                     comment = c(ORCID = "0000-0001-7936-4285"),
                     email="lyubchich@umces.edu"),
              person("Yulia R.", "Gel", role = "aut"),
+             person("Alexander", "Brenning", role = "ctb"),
              person("Calvin", "Chu", role = "ctb"),
              person("Xin", "Huang", role = "ctb"),
              person("Umar", "Islambekov", role = "ctb"),
-             person("Palina", "Niamkova", role = "aut"),
+             person("Palina", "Niamkova", role = "ctb"),
              person("Dorcas", "Ofori-Boateng", role = "ctb"),
              person("Ethan D.", "Schaeffer", role = "ctb"),
              person("Srishti", "Vishwakarma", role = "ctb"),
@@ -27,18 +28,19 @@ RoxygenNote: 7.1.1
 Encoding: UTF-8
 VignetteBuilder: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2021-07-19 07:33:38 UTC; Slava
+Packaged: 2021-08-14 03:04:54 UTC; Slava
 Author: Vyacheslav Lyubchich [aut, cre]
     (<https://orcid.org/0000-0001-7936-4285>),
   Yulia R. Gel [aut],
+  Alexander Brenning [ctb],
   Calvin Chu [ctb],
   Xin Huang [ctb],
   Umar Islambekov [ctb],
-  Palina Niamkova [aut],
+  Palina Niamkova [ctb],
   Dorcas Ofori-Boateng [ctb],
   Ethan D. Schaeffer [ctb],
   Srishti Vishwakarma [ctb],
   Xingyu Wang [ctb]
 Maintainer: Vyacheslav Lyubchich <lyubchich@umces.edu>
 Repository: CRAN
-Date/Publication: 2021-07-20 08:00:02 UTC
+Date/Publication: 2021-08-14 14:20:02 UTC

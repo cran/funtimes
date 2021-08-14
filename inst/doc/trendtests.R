@@ -50,7 +50,7 @@ wavk_test(X0 ~ 0, factor.length = "adaptive.selection") # WAVK with hybrid boots
 wavk_test(X0 ~ t, factor.length = "adaptive.selection")
 
 ## -----------------------------------------------------------------------------
-sapply(names(X[,-1]), function(x) wavk_test(eval(parse(text = x)) ~ t)$p.value)
+apply(X[,-1], 2, function(x) wavk_test(x ~ t, factor.length = "adaptive.selection")$p.value)
 
 ## -----------------------------------------------------------------------------
 wavk_test(X3 ~ poly(t, 2), factor.length = "adaptive.selection", out = TRUE)
