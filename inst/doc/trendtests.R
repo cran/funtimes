@@ -29,6 +29,10 @@ p1 + p2 + p3 +
 ## ---- echo = FALSE------------------------------------------------------------
 ggplot(X, aes(x = Time, y = X0)) + geom_line() + theme_minimal()
 
+## ----eval = FALSE-------------------------------------------------------------
+#  install.packages("funtimes")
+#  library(funtimes)
+
 ## -----------------------------------------------------------------------------
 notrend_test(X0)
 
@@ -54,4 +58,7 @@ apply(X[,-1], 2, function(x) wavk_test(x ~ t, factor.length = "adaptive.selectio
 
 ## -----------------------------------------------------------------------------
 wavk_test(X3 ~ poly(t, 2), factor.length = "adaptive.selection", out = TRUE)
+
+## -----------------------------------------------------------------------------
+citation("funtimes")
 
