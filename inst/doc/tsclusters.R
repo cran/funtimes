@@ -11,10 +11,16 @@ library(gridExtra)
 library(readxl)
 library(reshape2)
 
-## -----------------------------------------------------------------------------
-d_org <- readxl::read_xlsx("Aus_Sea_Levels_17.xlsx", skip = 1, n_max = 7300, col_types = rep("numeric", 20))
-# yearly average
-d <- data.frame(aggregate(d_org[, 4:20], list(d_org$Year), FUN = 'mean', na.rm = TRUE)[, -1], row.names = unique(d_org$Year))
+## ---- eval=FALSE--------------------------------------------------------------
+#  d_org <- readxl::read_xlsx("Aus_Sea_Levels_17.xlsx", skip = 1, n_max = 7300)
+#  # yearly average
+#  d <- data.frame(aggregate(d_org[, 4:20], list(d_org$Year),
+#                            FUN = 'mean', na.rm = TRUE)[, -1],
+#                  row.names = unique(d_org$Year))
+
+## ---- echo=FALSE--------------------------------------------------------------
+# saveRDS(d, "Aus_Sea_Levels_17.rds")
+d <- readRDS("Aus_Sea_Levels_17.rds")
 
 ## -----------------------------------------------------------------------------
 dlong <- reshape2::melt(t(d))
@@ -29,7 +35,7 @@ Clus_sync <- sync_cluster(d ~ t, Window = 3, B = 100)
 Clus_sync
 
 ## -----------------------------------------------------------------------------
-for(i in 0:max(Clus_sync$cluster)) {
+for (i in 0:max(Clus_sync$cluster)) {
   assign(paste('py', i, sep = ''),
          ggplot(melt(t(d[, Clus_sync$cluster == i]))) +
            geom_line(aes(x = Var2,y = value,color = Var1),size = 1) +

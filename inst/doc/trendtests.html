@@ -12,11 +12,23 @@
 
 <meta name="author" content="Vyacheslav Lyubchich" />
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-09-08" />
 
 <title>Tests for trends in time series</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -26,6 +38,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -109,13 +122,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -149,7 +169,187 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -163,27 +363,29 @@ div.csl-indent {
 
 <h1 class="title toc-ignore">Tests for trends in time series</h1>
 <h4 class="author">Vyacheslav Lyubchich</h4>
-<h4 class="date">2022-02-22</h4>
+<h4 class="date">2022-09-08</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
-<li><a href="#testing-for-presence-of-a-trend"><span class="toc-section-number">2</span> Testing for presence of a trend</a>
+<li><a href="#introduction" id="toc-introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#testing-for-presence-of-a-trend" id="toc-testing-for-presence-of-a-trend"><span class="toc-section-number">2</span> Testing for presence of a trend</a>
 <ul>
-<li><a href="#linear-trend"><span class="toc-section-number">2.1</span> Linear trend</a></li>
-<li><a href="#monotonic-trend"><span class="toc-section-number">2.2</span> Monotonic trend</a></li>
-<li><a href="#any-trend"><span class="toc-section-number">2.3</span> Any trend</a></li>
+<li><a href="#linear-trend" id="toc-linear-trend"><span class="toc-section-number">2.1</span> Linear trend</a></li>
+<li><a href="#monotonic-trend" id="toc-monotonic-trend"><span class="toc-section-number">2.2</span> Monotonic trend</a></li>
+<li><a href="#any-trend" id="toc-any-trend"><span class="toc-section-number">2.3</span> Any trend</a></li>
 </ul></li>
-<li><a href="#testing-a-specific-parametric-form-of-trend"><span class="toc-section-number">3</span> Testing a specific parametric form of trend</a></li>
-<li><a href="#citation">Citation</a></li>
-<li><a href="#references">References</a></li>
+<li><a href="#testing-a-specific-parametric-form-of-trend" id="toc-testing-a-specific-parametric-form-of-trend"><span class="toc-section-number">3</span> Testing a specific parametric form
+of trend</a></li>
+<li><a href="#citation" id="toc-citation">Citation</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>The majority of studies focus on detection of linear or monotonic trends, using</p>
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The majority of studies focus on detection of linear or monotonic
+trends, using</p>
 <ul>
 <li>classical t-test (for linear trends) or</li>
 <li>rank-based Mann–Kendall test (for monotonic trends)</li>
@@ -191,10 +393,20 @@ div.csl-indent {
 <p>typically under the assumption of uncorrelated data.</p>
 <p>There exist two main problems:</p>
 <ul>
-<li>dependence effect, that is, the issue of inflating significance due to dependent observations when the test is developed for independent data (always check assumptions of the testing method!), and</li>
-<li>change points or regime shifts that affect the linear or monotonic trend hypothesis. For example, when testing the null hypothesis (<span class="math inline">\(H_0\)</span>) of no trend against the alternative hypothesis (<span class="math inline">\(H_1\)</span>) of linear trend, using t-test, it is easier to reject <span class="math inline">\(H_0\)</span> and accept <span class="math inline">\(H_1\)</span> in case A below, than in case B, and especially hard to reject <span class="math inline">\(H_0\)</span> in case C. Case C reminds us that a test with proper alternative hypothesis should be chosen, and that non-rejection of <span class="math inline">\(H_0\)</span> does not mean it is true.</li>
+<li>dependence effect, that is, the issue of inflating significance due
+to dependent observations when the test is developed for independent
+data (always check assumptions of the testing method!), and</li>
+<li>change points or regime shifts that affect the linear or monotonic
+trend hypothesis. For example, when testing the null hypothesis (<span class="math inline">\(H_0\)</span>) of no trend against the alternative
+hypothesis (<span class="math inline">\(H_1\)</span>) of linear trend,
+using t-test, it is easier to reject <span class="math inline">\(H_0\)</span> and accept <span class="math inline">\(H_1\)</span> in case A below, than in case B, and
+especially hard to reject <span class="math inline">\(H_0\)</span> in
+case C. Case C reminds us that a test with proper alternative hypothesis
+should be chosen, and that non-rejection of <span class="math inline">\(H_0\)</span> does not mean it is true.</li>
 </ul>
-<p>These problems can be addressed by using tests for <strong>non-monotonic trends</strong> assuming that <strong>observations can be autocorrelated</strong>.</p>
+<p>These problems can be addressed by using tests for
+<strong>non-monotonic trends</strong> assuming that <strong>observations
+can be autocorrelated</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>n)</span>
@@ -206,25 +418,33 @@ div.csl-indent {
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>The time series above were simulated:<br />
 A) <code>X1</code> with linear trend,<br />
-B) <code>X2</code> with square root – nonlinear monotonic – trend, and<br />
-C) <code>X3</code> with quadratic – nonlinear non-monotonic – trend,<br />
+B) <code>X2</code> with square root – nonlinear monotonic – trend,
+and<br />
+C) <code>X3</code> with quadratic – nonlinear non-monotonic –
+trend,<br />
 with stationary autocorrelated innovations <code>X0</code>: <span class="math inline">\(X0_t = 0.5X0_{t-1} + e_t\)</span>, where <span class="math inline">\(e_t \sim N(0, 0.5^2)\)</span>.</p>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>Let’s test these time series using the functions from package <code>funtimes</code>, using significance level <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+<p>Let’s test these time series using the functions from package
+<code>funtimes</code>, using significance level <span class="math inline">\(\alpha = 0.05\)</span>.</p>
 <p>To install and load the package, run</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(funtimes)</span></code></pre></div>
 </div>
 <div id="testing-for-presence-of-a-trend" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Testing for presence of a trend</h1>
-<p>Function <code>notrend_test</code> tests the null hypothesis of no trend against different alternatives defined by the corresponding tests.</p>
+<h1><span class="header-section-number">2</span> Testing for presence of
+a trend</h1>
+<p>Function <code>notrend_test</code> tests the null hypothesis of no
+trend against different alternatives defined by the corresponding
+tests.</p>
 <div id="linear-trend" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Linear trend</h2>
+<h2><span class="header-section-number">2.1</span> Linear trend</h2>
 <p>Consider the following pair of hypotheses<br />
 <span class="math inline">\(H_0\)</span>: no trend<br />
 <span class="math inline">\(H_1\)</span>: linear trend<br />
 that can be tested specifically using t-test.</p>
-<p>Assuming the time series may be autocorrelated (which is the usual case with observational data), we apply sieve-bootstrap version of the <strong>t-test</strong>, by adapting the approach of <span class="citation">Noguchi, Gel, and Duguay (2011)</span>:</p>
+<p>Assuming the time series may be autocorrelated (which is the usual
+case with observational data), we apply sieve-bootstrap version of the
+<strong>t-test</strong>, by adapting the approach of <span class="citation">Noguchi, Gel, and Duguay (2011)</span>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">notrend_test</span>(X0)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sieve-bootstrap Student&#39;s t-test for a linear trend</span></span>
@@ -239,51 +459,89 @@ that can be tested specifically using t-test.</p>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># $AR_coefficients</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     phi_1 </span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.4212756</span></span></code></pre></div>
-<p>The large <span class="math inline">\(p\)</span>-value correctly indicates that there is not enough evidence to reject the hypothesis of no trend in <code>X0</code> in favor of the alternative hypothesis of a linear trend.</p>
+<p>The large <span class="math inline">\(p\)</span>-value correctly
+indicates that there is not enough evidence to reject the hypothesis of
+no trend in <code>X0</code> in favor of the alternative hypothesis of a
+linear trend.</p>
 <p>For the other time series, <span class="math inline">\(p\)</span>-values are reported below:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X[,<span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">notrend_test</span>(x)<span class="sc">$</span>p.value)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    X1    X2    X3 </span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.000 0.002 0.858</span></span></code></pre></div>
-<p>indicating that the null hypothesis of no trend could be rejected and hypothesis of a linear trend could be accepted for <code>X1</code> and <code>X2</code>. While <code>X3</code> has a trend (based on the way it was simulated and the time series plot above), the alternative hypothesis of a linear trend does not fit in this case, so the test for linear trend (t-test) failed to reject the null hypothesis.</p>
+<p>indicating that the null hypothesis of no trend could be rejected and
+hypothesis of a linear trend could be accepted for <code>X1</code> and
+<code>X2</code>. While <code>X3</code> has a trend (based on the way it
+was simulated and the time series plot above), the alternative
+hypothesis of a linear trend does not fit in this case, so the test for
+linear trend (t-test) failed to reject the null hypothesis.</p>
 </div>
 <div id="monotonic-trend" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Monotonic trend</h2>
-<p>Since a linear trend is also a monotonic trend, we may expect seeing similar results when testing the following pair of hypotheses<br />
+<h2><span class="header-section-number">2.2</span> Monotonic trend</h2>
+<p>Since a linear trend is also a monotonic trend, we may expect seeing
+similar results when testing the following pair of hypotheses<br />
 <span class="math inline">\(H_0\)</span>: no trend<br />
 <span class="math inline">\(H_1\)</span>: monotonic trend<br />
 using Mann–Kendall test.</p>
-<p>Apply <strong>Mann–Kendall test</strong>, also with the sieve-bootstrap enhancement for potentially autocorrelated data; <span class="math inline">\(p\)</span>-values are shown below:</p>
+<p>Apply <strong>Mann–Kendall test</strong>, also with the
+sieve-bootstrap enhancement for potentially autocorrelated data; <span class="math inline">\(p\)</span>-values are shown below:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">notrend_test</span>(x, <span class="at">test =</span> <span class="st">&quot;MK&quot;</span>)<span class="sc">$</span>p.value)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    X0    X1    X2    X3 </span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.057 0.000 0.000 0.929</span></span></code></pre></div>
-<p>indicating that the null hypothesis of no trend could be rejected and hypothesis of a monotonic trend could be accepted for <code>X1</code> and <code>X2</code>. For <code>X0</code> and <code>X3</code>, the null hypothesis could not be rejected, because <code>X0</code> does not have a trend, and <code>X3</code> has a trend that does not match the alternative hypothesis.</p>
+<p>indicating that the null hypothesis of no trend could be rejected and
+hypothesis of a monotonic trend could be accepted for <code>X1</code>
+and <code>X2</code>. For <code>X0</code> and <code>X3</code>, the null
+hypothesis could not be rejected, because <code>X0</code> does not have
+a trend, and <code>X3</code> has a trend that does not match the
+alternative hypothesis.</p>
 </div>
 <div id="any-trend" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> Any trend</h2>
-<p>If the interest is in testing for any, potentially non-monotonic trend, consider testing the following pair of hypotheses<br />
+<h2><span class="header-section-number">2.3</span> Any trend</h2>
+<p>If the interest is in testing for any, potentially non-monotonic
+trend, consider testing the following pair of hypotheses<br />
 <span class="math inline">\(H_0\)</span>: no trend<br />
 <span class="math inline">\(H_1\)</span>: any trend<br />
-using local regression-based WAVK test <span class="citation">(Wang, Akritas, and Van Keilegom 2008)</span>.</p>
-<p>Apply <strong>WAVK test</strong>, also with the sieve-bootstrap enhancement for potentially autocorrelated data:</p>
+using local regression-based WAVK test <span class="citation">(Wang,
+Akritas, and Van Keilegom 2008)</span>.</p>
+<p>Apply <strong>WAVK test</strong>, also with the sieve-bootstrap
+enhancement for potentially autocorrelated data:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">notrend_test</span>(x, <span class="at">test =</span> <span class="st">&quot;WAVK&quot;</span>, </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>)<span class="sc">$</span>p.value)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    X0    X1    X2    X3 </span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.337 0.000 0.026 0.004</span></span></code></pre></div>
-<p>The results indicate that WAVK test was correct in non-rejecting the null hypothesis for <code>X0</code>, and correctly rejected it for the time series with trends <code>X1</code>, <code>X2</code>, and <code>X3</code>.</p>
-<p><span class="citation">Lyubchich, Gel, and El-Shaarawi (2013)</span> originally implemented <em>hybrid</em> bootstrap to this test statistic, available from the <code>wavk_test</code> function described in the next section.</p>
+<p>The results indicate that WAVK test was correct in non-rejecting the
+null hypothesis for <code>X0</code>, and correctly rejected it for the
+time series with trends <code>X1</code>, <code>X2</code>, and
+<code>X3</code>.</p>
+<p><span class="citation">Lyubchich, Gel, and El-Shaarawi (2013)</span>
+originally implemented <em>hybrid</em> bootstrap to this test statistic,
+available from the <code>wavk_test</code> function described in the next
+section.</p>
 </div>
 </div>
 <div id="testing-a-specific-parametric-form-of-trend" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Testing a specific parametric form of trend</h1>
-<p>Function <code>wavk_test</code> is developed for the following goodness-of-fit question <span class="citation">(Lyubchich, Gel, and El-Shaarawi 2013)</span>:<br />
+<h1><span class="header-section-number">3</span> Testing a specific
+parametric form of trend</h1>
+<p>Function <code>wavk_test</code> is developed for the following
+goodness-of-fit question <span class="citation">(Lyubchich, Gel, and
+El-Shaarawi 2013)</span>:<br />
 <span class="math inline">\(H_0\)</span>: trend is of form <span class="math inline">\(f(\theta,t)\)</span><br />
 <span class="math inline">\(H_1\)</span>: trend is not of form <span class="math inline">\(f(\theta,t)\)</span><br />
-where <span class="math inline">\(f\)</span> belongs to a known family of smooth parametric functions, and <span class="math inline">\(\theta\)</span> are its parameters.</p>
-<p><strong>Note</strong> Considering <span class="math inline">\(f(\theta,t)\)</span> being some polynomial function, non-rejection of the null hypothesis means that function <span class="math inline">\(f(\theta,t)\)</span> or its simpler form (lower-order polynomial) is sufficient for describing the trend in the tested time series.</p>
-<p><strong>Note</strong> The case of <span class="math inline">\(f(\theta,t) \equiv 0\)</span> corresponds to testing for no trend (in other words, for a constant trend, same as in the previous section), and the following code differs only in the type of bootstrap used,</p>
+where <span class="math inline">\(f\)</span> belongs to a known family
+of smooth parametric functions, and <span class="math inline">\(\theta\)</span> are its parameters.</p>
+<p><strong>Note</strong> Considering <span class="math inline">\(f(\theta,t)\)</span> being some polynomial
+function, non-rejection of the null hypothesis means that function <span class="math inline">\(f(\theta,t)\)</span> or its simpler form
+(lower-order polynomial) is sufficient for describing the trend in the
+tested time series.</p>
+<p><strong>Note</strong> The case of <span class="math inline">\(f(\theta,t) \equiv 0\)</span> corresponds to
+testing for no trend (in other words, for a constant trend, same as in
+the previous section), and the following code differs only in the type
+of bootstrap used,</p>
 <ul>
-<li>sieve bootstrap in <code>notrend_test</code> (WAVK statistic is calculated on original time series and simulated autoregressive series) and</li>
-<li>hybrid bootstrap in <code>wavk_test</code> (WAVK statistic is calculated on time series after the trend <span class="math inline">\(f(\theta,t)\)</span> and autoregressive dependence are removed, and on simulated independent normal series)</li>
+<li>sieve bootstrap in <code>notrend_test</code> (WAVK statistic is
+calculated on original time series and simulated autoregressive series)
+and</li>
+<li>hybrid bootstrap in <code>wavk_test</code> (WAVK statistic is
+calculated on time series after the trend <span class="math inline">\(f(\theta,t)\)</span> and autoregressive dependence
+are removed, and on simulated independent normal series)</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">notrend_test</span>(X0, <span class="at">test =</span> <span class="st">&quot;WAVK&quot;</span>, <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>) <span class="co"># WAVK with sieve bootstrap</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
@@ -307,7 +565,8 @@ where <span class="math inline">\(f\)</span> belongs to a known family of smooth
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># WAVK test statistic = 0.30965, adaptively selected window = 4, p-value</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># = 0.632</span></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative hypothesis: trend is not of the form X0 ~ 0.</span></span></code></pre></div>
-<p>To test a linear trend <span class="math inline">\(f(\theta,t) = \theta_0 + \theta_1 t\)</span>, use</p>
+<p>To test a linear trend <span class="math inline">\(f(\theta,t) =
+\theta_0 + \theta_1 t\)</span>, use</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wavk_test</span>(X0 <span class="sc">~</span> t, <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Trend test by Wang, Akritas, and Van Keilegom (bootstrap p-values)</span></span>
@@ -316,12 +575,16 @@ where <span class="math inline">\(f\)</span> belongs to a known family of smooth
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># WAVK test statistic = -0.085378, adaptively selected window = 4,</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value = 0.98</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative hypothesis: trend is not of the form X0 ~ t.</span></span></code></pre></div>
-<p>Note that the time sequence <code>t</code> is specified automatically within the function.</p>
+<p>Note that the time sequence <code>t</code> is specified automatically
+within the function.</p>
 <p>For the other time series, <span class="math inline">\(p\)</span>-values are shown below:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(X[,<span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">wavk_test</span>(x <span class="sc">~</span> t, <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>)<span class="sc">$</span>p.value)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    X1    X2    X3 </span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.954 0.786 0.020</span></span></code></pre></div>
-<p>The function <code>poly</code> could also be used, for example, test quadratic trend <span class="math inline">\(f(\theta,t) = \theta_0 + \theta_1 t + \theta_2 t^2\)</span> and show the trend estimates using the argument <code>out = TRUE</code>:</p>
+<p>The function <code>poly</code> could also be used, for example, test
+quadratic trend <span class="math inline">\(f(\theta,t) = \theta_0 +
+\theta_1 t + \theta_2 t^2\)</span> and show the trend estimates using
+the argument <code>out = TRUE</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wavk_test</span>(X3 <span class="sc">~</span> <span class="fu">poly</span>(t, <span class="dv">2</span>), <span class="at">factor.length =</span> <span class="st">&quot;adaptive.selection&quot;</span>, <span class="at">out =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Trend test by Wang, Akritas, and Van Keilegom (bootstrap p-values)</span></span>
@@ -351,34 +614,44 @@ where <span class="math inline">\(f\)</span> belongs to a known family of smooth
 </div>
 <div id="citation" class="section level1 unnumbered">
 <h1 class="unnumbered">Citation</h1>
-<p>This vignette belongs to R package <code>funtimes</code>. If you wish to cite this page, please cite the package:</p>
+<p>This vignette belongs to R package <code>funtimes</code>. If you wish
+to cite this page, please cite the package:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To cite package &#39;funtimes&#39; in publications use:</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Vyacheslav Lyubchich and Yulia R. Gel (2022). funtimes: Functions for</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Time Series Analysis. R package version 8.2.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Lyubchich V, Gel Y, Vishwakarma S (2022). _funtimes: Functions for</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Time Series Analysis_. R package version 9.0.</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A BibTeX entry for LaTeX users is</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   @Manual{,</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     title = {funtimes: Functions for Time Series Analysis},</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     author = {Vyacheslav Lyubchich and Yulia R. Gel},</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     author = {Vyacheslav Lyubchich and Yulia R. Gel and Srishti Vishwakarma},</span></span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     year = {2022},</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     note = {R package version 8.2},</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     note = {R package version 9.0},</span></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Lyubchich_etal_2013_wavk" class="csl-entry">
-Lyubchich, V., Y. R. Gel, and A. El-Shaarawi. 2013. <span>“On Detecting Non-Monotonic Trends in Environmental Time Series: A Fusion of Local Regression and Bootstrap.”</span> <em>Environmetrics</em> 24 (4): 209–26. <a href="https://doi.org/10.1002/env.2212">https://doi.org/10.1002/env.2212</a>.
+Lyubchich, V., Y. R. Gel, and A. El-Shaarawi. 2013. <span>“On Detecting
+Non-Monotonic Trends in Environmental Time Series: A Fusion of Local
+Regression and Bootstrap.”</span> <em>Environmetrics</em> 24 (4):
+209–26. <a href="https://doi.org/10.1002/env.2212">https://doi.org/10.1002/env.2212</a>.
 </div>
 <div id="ref-Noguchi_etal_2011" class="csl-entry">
-Noguchi, K., Y. R. Gel, and C. R. Duguay. 2011. <span>“Bootstrap-Based Tests for Trends in Hydrological Time Series, with Application to Ice Phenology Data.”</span> <em>Journal of Hydrology</em> 410 (3): 150–61. <a href="https://doi.org/10.1016/j.jhydrol.2011.09.008">https://doi.org/10.1016/j.jhydrol.2011.09.008</a>.
+Noguchi, K., Y. R. Gel, and C. R. Duguay. 2011. <span>“Bootstrap-Based
+Tests for Trends in Hydrological Time Series, with Application to Ice
+Phenology Data.”</span> <em>Journal of Hydrology</em> 410 (3): 150–61.
+<a href="https://doi.org/10.1016/j.jhydrol.2011.09.008">https://doi.org/10.1016/j.jhydrol.2011.09.008</a>.
 </div>
 <div id="ref-Wang_etal_2008" class="csl-entry">
-Wang, L., M. G. Akritas, and I. Van Keilegom. 2008. <span>“An <span>ANOVA</span>-Type Nonparametric Diagnostic Test for Heteroscedastic Regression Models.”</span> <em>Journal of Nonparametric Statistics</em> 20 (5): 365–82.
+Wang, L., M. G. Akritas, and I. Van Keilegom. 2008. <span>“An
+<span>ANOVA</span>-Type Nonparametric Diagnostic Test for
+Heteroscedastic Regression Models.”</span> <em>Journal of Nonparametric
+Statistics</em> 20 (5): 365–82.
 </div>
 </div>
 </div>
