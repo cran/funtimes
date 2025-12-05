@@ -1,8 +1,8 @@
 Package: funtimes
 Type: Package
 Title: Functions for Time Series Analysis
-Version: 9.1
-Date: 2023-03-21
+Version: 10.0
+Date: 2025-12-05
 Authors@R: c(person("Vyacheslav", "Lyubchich", 
                     role = c("aut", "cre"),
                     comment = c(ORCID = "0000-0001-7936-4285"),
@@ -19,19 +19,18 @@ Authors@R: c(person("Vyacheslav", "Lyubchich",
              person("Xingyu", "Wang", role = "ctb"))
 Depends: R (>= 3.5.0)
 License: GPL (>= 2)
-Imports: dbscan, Kendall, lmtest, mlVAR, parallel, Rdpack, sandwich,
-        vars
+Imports: dbscan, lmtest, mlVAR, parallel, Rdpack, sandwich, vars
 Suggests: covid19us, Ecdat, ggplot2, gridExtra, knitr, patchwork,
         randomcoloR, readxl, reshape2, rmarkdown
 Description: Nonparametric estimators and tests for time series analysis. The functions use bootstrap techniques and robust nonparametric difference-based estimators to test for the presence of possibly non-monotonic trends and for synchronicity of trends in multiple time series.
 RdMacros: Rdpack
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 VignetteBuilder: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2023-03-21 22:53:01 UTC; Slava
-Author: Vyacheslav Lyubchich [aut, cre]
-    (<https://orcid.org/0000-0001-7936-4285>),
+Packaged: 2025-12-05 05:01:39 UTC; Slava
+Author: Vyacheslav Lyubchich [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-7936-4285>),
   Yulia R. Gel [aut],
   Alexander Brenning [ctb],
   Calvin Chu [ctb],
@@ -44,4 +43,4 @@ Author: Vyacheslav Lyubchich [aut, cre]
   Xingyu Wang [ctb]
 Maintainer: Vyacheslav Lyubchich <lyubchich@umces.edu>
 Repository: CRAN
-Date/Publication: 2023-03-21 23:40:02 UTC
+Date/Publication: 2025-12-05 05:20:02 UTC

@@ -1,13 +1,13 @@
-## ---- echo = FALSE, message = FALSE-------------------------------------------
+## ----echo = FALSE, message = FALSE--------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = "#")
 library(funtimes)
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  install.packages("funtimes")
-#  library(funtimes)
+# install.packages("funtimes")
+# library(funtimes)
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  ?beales
+# ?beales
 
 ## -----------------------------------------------------------------------------
 discharge <- c(60, 50, 90, 100, 80, 90, 100, 90, 80, 70)

@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE-------------------------------------------
+## ----echo = FALSE, message = FALSE--------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = "#")
 library(funtimes)
 # devtools::load_all(".") #remove this line
@@ -13,7 +13,7 @@ X2 <- 2*(Time/n)^0.5 + X0
 X3 <- 0.5*(Time - n/2)/n - 6*((Time - n/2)/n)^2 + X0
 X <- as.data.frame(cbind(X0, X1, X2, X3))
 
-## ---- echo = FALSE, fig.width = 7, dpi = 96-----------------------------------
+## ----echo = FALSE, fig.width = 7, dpi = 96------------------------------------
 library(ggplot2)
 library(patchwork)
 p1 <- ggplot(X, aes(x = Time, y = X1)) + geom_line() + theme_minimal()
@@ -26,12 +26,12 @@ p1 + p2 + p3 +
     tag_levels = 'A'
   )
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 ggplot(X, aes(x = Time, y = X0)) + geom_line() + theme_minimal()
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  install.packages("funtimes")
-#  library(funtimes)
+# install.packages("funtimes")
+# library(funtimes)
 
 ## -----------------------------------------------------------------------------
 notrend_test(X0)

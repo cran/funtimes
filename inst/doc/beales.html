@@ -12,7 +12,7 @@
 
 <meta name="author" content="Vyacheslav Lyubchich" />
 
-<meta name="date" content="2023-03-21" />
+<meta name="date" content="2025-12-05" />
 
 <title>Beale’s estimator and sample size calculation</title>
 
@@ -50,6 +50,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -150,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -363,7 +365,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Beale’s estimator and sample size
 calculation</h1>
 <h4 class="author">Vyacheslav Lyubchich</h4>
-<h4 class="date">2023-03-21</h4>
+<h4 class="date">2025-12-05</h4>
 
 
 <div id="TOC">
@@ -404,10 +406,10 @@ estimate <span class="math inline">\(\widehat{X}=\frac{N}{n&#39;}\sum_{i=1}^{n&#
 following formula (2.8) in <span class="citation">Thompson
 (2012)</span>.</p>
 <p>To install and load the package, run</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(funtimes)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(funtimes)</span></code></pre></div>
 <p>Help file for the function can be opened from R with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>?beales</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>?beales</span></code></pre></div>
 <p>The function uses the following groups of arguments as its
 inputs.</p>
 <ul>
@@ -443,30 +445,30 @@ measurements of loads are missing.</p>
 <p>The inputs should be organized in vectors of same length. Consider a
 toy example where ten measurements cover the whole period of interest
 (i.e., the population size <code>N = 10</code>):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>discharge <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">50</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">90</span>, <span class="dv">80</span>, <span class="dv">70</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>loads <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">22</span>, <span class="dv">44</span>, <span class="dv">48</span>, <span class="cn">NA</span>, <span class="dv">44</span>, <span class="dv">49</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="dv">36</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>discharge <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">50</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">90</span>, <span class="dv">80</span>, <span class="dv">70</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>loads <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">22</span>, <span class="dv">44</span>, <span class="dv">48</span>, <span class="cn">NA</span>, <span class="dv">44</span>, <span class="dv">49</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="dv">36</span>)</span></code></pre></div>
 <p><code>NA</code>s stand for missing values.</p>
 <p>To estimate the total load for this period, use:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>B10 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 399.176 with 95% confidence interval from 391.315 to 407.037.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>B10 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 399.176 with 95% confidence interval from 391.315 to 407.037.&quot;</span></span></code></pre></div>
 <p>By default (the setting <code>verbose = TRUE</code>), the function
 shows text output. All estimates have been saved in the object
 <code>B10</code> and can be extracted from there. For example, see the
 list of elements saved in <code>B10</code></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(B10)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;CI&quot;       &quot;N&quot;        &quot;estimate&quot; &quot;level&quot;    &quot;n&quot;        &quot;se&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span>(B10)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># [1] &quot;CI&quot;       &quot;N&quot;        &quot;estimate&quot; &quot;level&quot;    &quot;n&quot;        &quot;se&quot;</span></span></code></pre></div>
 <p>then extract the population size and standard error of the load
 estimate</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>B10<span class="sc">$</span>N</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 10</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>B10<span class="sc">$</span>se</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 4.010797</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>B10<span class="sc">$</span>N</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># [1] 10</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>B10<span class="sc">$</span>se</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># [1] 4.010797</span></span></code></pre></div>
 <p>If a different level of confidence (default is 95%) is needed, set it
 using the argument <code>level</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>B11 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads, <span class="at">level =</span> <span class="fl">0.9</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 399.176 with 90% confidence interval from 392.578 to 405.773.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>B11 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads, <span class="at">level =</span> <span class="fl">0.9</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 399.176 with 90% confidence interval from 392.578 to 405.773.&quot;</span></span></code></pre></div>
 <p>To suppress the text outputs, use <code>verbose = FALSE</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>B12 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads, <span class="at">level =</span> <span class="fl">0.9</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>B12 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge, <span class="at">y =</span> loads, <span class="at">level =</span> <span class="fl">0.9</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="sec:dm" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Common case, when some
@@ -475,15 +477,15 @@ discharge data are missing</h1>
 function fills-in the missing discharge measurements with average
 estimates automatically. For example, now the first discharge value is
 missing:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>discharge2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">50</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">90</span>, <span class="dv">80</span>, <span class="dv">70</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>loads2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">22</span>, <span class="dv">44</span>, <span class="dv">48</span>, <span class="cn">NA</span>, <span class="dv">44</span>, <span class="dv">49</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="dv">36</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>discharge2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">50</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">90</span>, <span class="dv">80</span>, <span class="dv">70</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>loads2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">22</span>, <span class="dv">44</span>, <span class="dv">48</span>, <span class="cn">NA</span>, <span class="dv">44</span>, <span class="dv">49</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="dv">36</span>)</span></code></pre></div>
 <p>The <code>NA</code> in discharge will be replaced by an average value
 of the non-missing measurements, and the first pair of discharge and
 load (average discharge and the corresponding load of 33) will still be
 used in estimating covariance and other quantities. Simply use the
 function in the same way as above:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>B20 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 394.35 with 95% confidence interval from 381.569 to 407.131.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>B20 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 10) is 394.35 with 95% confidence interval from 381.569 to 407.131.&quot;</span></span></code></pre></div>
 <p>In another case, <em>both discharge and load data might be
 missing</em>. If they are not represented at all in the data vectors (by
 <code>NA</code>s), a simple trick is to set the population size,
@@ -491,14 +493,14 @@ missing</em>. If they are not represented at all in the data vectors (by
 example, if the data above are ten monthly measurements, and an estimate
 for the whole year (12 months) is required, set <code>N = 12</code> in
 the function:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>B21 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>B21 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span></code></pre></div>
 <p>which is equivalent to adding two missing values to each vector, like
 this:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>discharge22 <span class="ot">&lt;-</span> <span class="fu">c</span>(discharge2, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>loads22 <span class="ot">&lt;-</span> <span class="fu">c</span>(loads2, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>B22 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge22, <span class="at">y =</span> loads22)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>discharge22 <span class="ot">&lt;-</span> <span class="fu">c</span>(discharge2, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>loads22 <span class="ot">&lt;-</span> <span class="fu">c</span>(loads2, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>B22 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge22, <span class="at">y =</span> loads22)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span></code></pre></div>
 </div>
 <div id="sec:samsize" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Sample size
@@ -513,21 +515,21 @@ at the output.</p>
 <p>For example, using our data for 10 months out of 12, estimate the
 sample size needed to estimate the total yearly load with the relative
 error up to 5%:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>B30 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">p =</span> <span class="fl">0.05</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 95% confidence interval with a relative error of 5%, a sample of size 6 is required.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>B30 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">p =</span> <span class="fl">0.05</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 95% confidence interval with a relative error of 5%, a sample of size 6 is required.&quot;</span></span></code></pre></div>
 <p>What if we increase the confidence of such interval (notice the
 differences in the last line of the output):</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>B31 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">level =</span> <span class="fl">0.99</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 99% confidence interval from 449.477 to 497.024.&quot;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 99% confidence interval with a relative error of 5%, a sample of size 8 is required.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>B31 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">level =</span> <span class="fl">0.99</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 99% confidence interval from 449.477 to 497.024.&quot;</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 99% confidence interval with a relative error of 5%, a sample of size 8 is required.&quot;</span></span></code></pre></div>
 <p>Similarly, when the margin of error is set:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>B32 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">d =</span> <span class="dv">15</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 95% confidence interval with a margin of error being 15, a sample of size 9 is required.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>B32 <span class="ot">&lt;-</span> <span class="fu">beales</span>(<span class="at">x =</span> discharge2, <span class="at">y =</span> loads2, <span class="at">N =</span> <span class="dv">12</span>, <span class="at">d =</span> <span class="dv">15</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co"># [1] &quot;Beale&#39;s estimate of the total (for population size 12) is 473.25 with 95% confidence interval from 455.161 to 491.339.&quot;</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co"># [1] &quot;To obtain a 95% confidence interval with a margin of error being 15, a sample of size 9 is required.&quot;</span></span></code></pre></div>
 <p>The estimated sample size can be extracted as follows:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>B32<span class="sc">$</span>nhat</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 9</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>B32<span class="sc">$</span>nhat</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co"># [1] 9</span></span></code></pre></div>
 </div>
 <div id="notes" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Notes</h1>
@@ -552,25 +554,24 @@ estimating the variances and covariance), and <span class="math inline">\(\bar{x
 <h1 class="unnumbered">Citation</h1>
 <p>This vignette belongs to R package <code>funtimes</code>. If you wish
 to cite this page, please cite the package:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To cite package &#39;funtimes&#39; in publications use:</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Lyubchich V, Gel Y, Vishwakarma S (2023). _funtimes: Functions for</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Time Series Analysis_. R package version 9.1.</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A BibTeX entry for LaTeX users is</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   @Manual{,</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     title = {funtimes: Functions for Time Series Analysis},</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     author = {Vyacheslav Lyubchich and Yulia R. Gel and Srishti Vishwakarma},</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     year = {2023},</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     note = {R package version 9.1},</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;funtimes&quot;</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co"># To cite package &#39;funtimes&#39; in publications use:</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#   Lyubchich V, Gel Y, Vishwakarma S (2025). _funtimes: Functions for</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#   Time Series Analysis_. R package version 10.0.</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co"># A BibTeX entry for LaTeX users is</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#   @Manual{,</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#     title = {funtimes: Functions for Time Series Analysis},</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#     author = {Vyacheslav Lyubchich and Yulia R. Gel and Srishti Vishwakarma},</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#     year = {2025},</span></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#     note = {R package version 10.0},</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Beale_1962" class="csl-entry">
 Beale, E. M. L. 1962. <span>“Some Uses of Computers in Operational
 Research.”</span> <em>Industrielle Organisation</em> 31 (1): 27–28.

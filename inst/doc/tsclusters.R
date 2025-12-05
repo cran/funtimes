@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE-------------------------------------------
+## ----echo = FALSE, message = FALSE--------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = "#",
                       fig.width = 7, 
                       fig.height = 6)
@@ -11,14 +11,14 @@ library(gridExtra)
 library(readxl)
 library(reshape2)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  d_org <- readxl::read_xlsx("Aus_Sea_Levels_17.xlsx", skip = 1, n_max = 7300)
-#  # yearly average
-#  d <- data.frame(aggregate(d_org[, 4:20], list(d_org$Year),
-#                            FUN = 'mean', na.rm = TRUE)[, -1],
-#                  row.names = unique(d_org$Year))
+## ----eval=FALSE---------------------------------------------------------------
+# d_org <- readxl::read_xlsx("Aus_Sea_Levels_17.xlsx", skip = 1, n_max = 7300)
+# # yearly average
+# d <- data.frame(aggregate(d_org[, 4:20], list(d_org$Year),
+#                           FUN = 'mean', na.rm = TRUE)[, -1],
+#                 row.names = unique(d_org$Year))
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # saveRDS(d, "Aus_Sea_Levels_17.rds")
 d <- readRDS("Aus_Sea_Levels_17.rds")
 
